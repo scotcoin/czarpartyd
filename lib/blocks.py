@@ -45,25 +45,34 @@ def parse_tx (db, tx):
         message_type_id = None
 
     message = tx['data'][4:]
-    if message_type_id == send.ID:
-        send.parse(db, tx, message)
-    elif message_type_id == order.ID:
-        order.parse(db, tx, message)
-    elif message_type_id == btcpay.ID:
-        btcpay.parse(db, tx, message)
-    elif message_type_id == issuance.ID:
-        issuance.parse(db, tx, message)
-    elif message_type_id == broadcast.ID:
-        broadcast.parse(db, tx, message)
-    elif message_type_id == bet.ID:
-        bet.parse(db, tx, message)
-    elif message_type_id == dividend.ID:
-        dividend.parse(db, tx, message)
-    elif message_type_id == cancel.ID:
-        cancel.parse(db, tx, message)
-    elif message_type_id == callback.ID:
-        callback.parse(db, tx, message)
+    supported = True
+
+    # Only send supports multiple destinations.
+    if message_type_id != send.ID and tx['destination'] and len(tx['destination'].split(' ')) > 1:
+        supported = False
     else:
+        if message_type_id == send.ID:
+            send.parse(db, tx, message)
+        elif message_type_id == order.ID:
+            order.parse(db, tx, message)
+        elif message_type_id == btcpay.ID:
+            btcpay.parse(db, tx, message)
+        elif message_type_id == issuance.ID:
+            issuance.parse(db, tx, message)
+        elif message_type_id == broadcast.ID:
+            broadcast.parse(db, tx, message)
+        elif message_type_id == bet.ID:
+            bet.parse(db, tx, message)
+        elif message_type_id == dividend.ID:
+            dividend.parse(db, tx, message)
+        elif message_type_id == cancel.ID:
+            cancel.parse(db, tx, message)
+        elif message_type_id == callback.ID:
+            callback.parse(db, tx, message)
+        else:
+            supported = False
+
+    if not supported:
         parse_tx_cursor.execute('''UPDATE transactions \
                                    SET supported=? \
                                    WHERE tx_hash=?''',
@@ -196,9 +205,9 @@ def initialise(db):
                       tx_hash TEXT UNIQUE,
                       block_index INTEGER,
                       source TEXT,
-                      destination TEXT,
-                      asset TEXT,
-                      quantity INTEGER,
+                      destinations TEXT,
+                      assets TEXT,
+                      quantities INTEGER,
                       status TEXT,
                       FOREIGN KEY (tx_index, tx_hash, block_index) REFERENCES transactions(tx_index, tx_hash, block_index))
                    ''')
@@ -569,15 +578,15 @@ def get_address (scriptpubkey):
 
 def get_tx_info (tx, block_index):
     """
-    The destination, if it exists, always comes before the data output; the
+    The destinations, if they exist, always comes before the data output; the
     change, if it exists, always comes after.
     """
 
     # Fee is the input values minus output values.
     fee = 0
 
-    # Get destination output and data output.
-    destination, btc_amount, data = None, None, b''
+    # Get destination outputs and data output.
+    destinations, btc_amount, data = [], None, b''
     pubkeyhash_encoding = False
     for vout in tx['vout']:
         fee -= vout['value'] * config.UNIT
@@ -613,15 +622,15 @@ def get_tx_info (tx, block_index):
                 else:
                     data += data_chunk
 
-        # Destination is the first output before the data.
-        if not destination and not btc_amount and not data:
+        # Destinations are outputs before the data.
+        if not data:
             address = get_address(vout['scriptPubKey'])
             if address:
-                destination = address
+                destinations.append(address)
                 btc_amount = round(vout['value'] * config.UNIT) # Floats are awful.
 
     # Check for, and strip away, prefix (except for burns).
-    if destination == config.UNSPENDABLE:
+    if destinations == [config.UNSPENDABLE,]:
         pass
     elif data[:len(config.PREFIX)] == config.PREFIX:
         data = data[len(config.PREFIX):]
@@ -629,7 +638,7 @@ def get_tx_info (tx, block_index):
         return b'', None, None, None, None
 
     # Only look for source if data were found or destination is UNSPENDABLE, for speed.
-    if not data and destination != config.UNSPENDABLE:
+    if not data and destinations != [config.UNSPENDABLE,]:
         return b'', None, None, None, None
 
     # Collect all possible source addresses; ignore coinbase transactions and anything but the simplest Pay‐to‐PubkeyHash inputs.
@@ -648,7 +657,7 @@ def get_tx_info (tx, block_index):
     if all(x == source_list[0] for x in source_list): source = source_list[0]
     else: source = None
 
-    return source, destination, btc_amount, round(fee), data
+    return source, destinations, btc_amount, round(fee), data
 
 def reparse (db, block_index=None, quiet=False):
     """Reparse all transactions (atomically). If block_index is set, rollback
@@ -809,8 +818,8 @@ def follow (db):
                     # Get the important details about each transaction.
                     tx = bitcoin.get_raw_transaction(tx_hash)
                     logging.debug('Status: examining transaction {}'.format(tx_hash))
-                    source, destination, btc_amount, fee, data = get_tx_info(tx, block_index)
-                    if source and (data or destination == config.UNSPENDABLE):
+                    source, destinations, btc_amount, fee, data = get_tx_info(tx, block_index)
+                    if source and (data or destinations == [config.UNSPENDABLE,]):
                         follow_cursor.execute('''INSERT INTO transactions(
                                             tx_index,
                                             tx_hash,
@@ -828,7 +837,7 @@ def follow (db):
                                              block_hash,
                                              block_time,
                                              source,
-                                             destination,
+                                             ' '.join(destinations),
                                              btc_amount,
                                              fee,
                                              data)

@@ -1,4 +1,6 @@
 ## Client Versions ##
+* v10.0.0
+	* multiple destinations (sends only, for now)
 * v9.20.0
 	* remove deadline checking in bets
 	* functionality to drop open bets, pending bet matches

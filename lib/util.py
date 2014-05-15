@@ -93,7 +93,13 @@ def log (db, command, category, bindings):
             logging.debug('Debit: {} from {} #{}# <{}>'.format(output(bindings['quantity'], bindings['asset']), bindings['address'], bindings['action'], bindings['event']))
 
         elif category == 'sends':
-            logging.info('Send: {} from {} to {} ({}) [{}]'.format(output(bindings['quantity'], bindings['asset']), bindings['source'], bindings['destination'], bindings['tx_hash'], bindings['status']))
+            destinations, quantities, assets = bindings['destinations'].split(' '), bindings['quantities'].split(' '), bindings['assets'].split(' ')
+            assert len(destinations) == len(quantities) == len(assets)
+            outputs = []
+            for i in range(len(destinations)):
+                outputs.append((destinations[i], quantities[i], assets[i]))
+            text = 'and'.join(['{} from {} to {}'.format(output(quantities[i], assets[i]), bindings['source'], destinations[i]) for i in range(len(destinations))])
+            logging.info('Send: {} ({}) [{}]'.format(text, bindings['tx_hash'], bindings['status']))
 
         elif category == 'orders':
             logging.info('Order: {} ordered {} for {} in {} blocks, with a provided fee of {} BTC and a required fee of {} BTC ({}) [{}]'.format(bindings['source'], output(bindings['give_quantity'], bindings['give_asset']), output(bindings['get_quantity'], bindings['get_asset']), bindings['expiration'], bindings['fee_provided'] / config.UNIT, bindings['fee_required'] / config.UNIT, bindings['tx_hash'], bindings['status']))
