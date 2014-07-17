@@ -187,10 +187,10 @@ def parse (db, tx, message):
             delta = (initial_value - value) * leverage * config.UNIT
             if tx['block_index'] >= 311500 or config.TESTNET:   # Protocol change.
                 bear_credit = bear_escrow + (delta * Fraction(bear_escrow, bear_wager_quantity))
-                bull_credit = (escrow_less_fee - bear_escrow) - (delta * Fraction(bull_escrow, bull_wager_quantity))
+                bull_credit = bull_escrow - (delta * Fraction(bull_escrow, bull_wager_quantity))
             else:
                 bear_credit = bear_escrow + delta
-                bull_credit = escrow_less_fee - bear_escrow - delta
+                bull_credit = bull_escrow - delta
             bear_credit = round(bear_credit)
             bull_credit = round(bull_credit)
 
@@ -228,6 +228,11 @@ def parse (db, tx, message):
             # Settle (if not liquidated).
             elif timestamp >= bet_match['deadline']:
                 bet_match_status = 'settled'
+
+                if tx['block_index'] >= 311500 or config.TESTNET:   # Protocol change.
+                    remaining = escrow_less_fee - (bull_credit + bear_credit)
+                    bull_credit += round(remaining * Fraction(bull_escrow, bear_escrow))
+                    bear_credit += remaining  - bull_credit
 
                 util.credit(db, tx['block_index'], bull_address, config.XCP, bull_credit)
                 util.credit(db, tx['block_index'], bear_address, config.XCP, bear_credit)
