@@ -355,7 +355,7 @@ def test_bet_notequal ():
     output_new[inspect.stack()[0][3]] = unsigned_tx_hex
 
 def test_broadcast_liquidate ():
-    unsigned_tx_hex = bitcoin.transaction(broadcast.compose(db, source_default, 1388000050, round(100 - (.415/3) - .00001, 5), fee_multiplier_default, 'Unit Test'), encoding='multisig')
+    unsigned_tx_hex = bitcoin.transaction(broadcast.compose(db, source_default, 1388000050, 99, fee_multiplier_default, 'Unit Test'), encoding='multisig')
 
     parse_hex(unsigned_tx_hex)
 
