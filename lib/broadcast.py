@@ -186,8 +186,8 @@ def parse (db, tx, message):
 
             delta = (initial_value - value) * leverage * config.UNIT
             if tx['block_index'] >= 311500 or config.TESTNET:   # Protocol change.
-                bear_credit = (bear_escrow + delta) * Fraction(bear_escrow, bear_wager_quantity)
-                bull_credit = (escrow_less_fee - bear_escrow - delta) * Fraction(bull_escrow, bull_wager_quantity)
+                bear_credit = bear_escrow + (delta * Fraction(bear_escrow, bear_wager_quantity))
+                bull_credit = (escrow_less_fee - bear_escrow) - (delta * Fraction(bull_escrow, bull_wager_quantity))
             else:
                 bear_credit = bear_escrow + delta
                 bull_credit = escrow_less_fee - bear_escrow - delta
