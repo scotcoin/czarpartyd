@@ -357,9 +357,11 @@ def match (db, tx):
                 'tx0_index': tx0['tx_index'],
                 'tx0_hash': tx0['tx_hash'],
                 'tx0_address': tx0['source'],
+                'tx0_wager_quantity': tx0['wager_quantity'],
                 'tx1_index': tx1['tx_index'],
                 'tx1_hash': tx1['tx_hash'],
                 'tx1_address': tx1['source'],
+                'tx1_wager_quantity': tx1['wager_quantity'],
                 'tx0_bet_type': tx0['bet_type'],
                 'tx1_bet_type': tx1['bet_type'],
                 'feed_address': tx1['feed_address'],
@@ -378,7 +380,7 @@ def match (db, tx):
                 'fee_fraction_int': tx1['fee_fraction_int'],
                 'status': 'pending',
             }
-            sql='insert into bet_matches values(:id, :tx0_index, :tx0_hash, :tx0_address, :tx1_index, :tx1_hash, :tx1_address, :tx0_bet_type, :tx1_bet_type, :feed_address, :initial_value, :deadline, :target_value, :leverage, :forward_quantity, :backward_quantity, :tx0_block_index, :tx1_block_index, :block_index, :tx0_expiration, :tx1_expiration, :match_expire_index, :fee_fraction_int, :status)'
+            sql='insert into bet_matches values(:id, :tx0_index, :tx0_hash, :tx0_address, :tx0_wager_quantity, :tx1_index, :tx1_hash, :tx1_address, :tx1_wager_quantity, :tx0_bet_type, :tx1_bet_type, :feed_address, :initial_value, :deadline, :target_value, :leverage, :forward_quantity, :backward_quantity, :tx0_block_index, :tx1_block_index, :block_index, :tx0_expiration, :tx1_expiration, :match_expire_index, :fee_fraction_int, :status)'
             cursor.execute(sql, bindings)
 
     cursor.close()
