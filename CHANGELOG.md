@@ -1,8 +1,12 @@
 ## Client Versions ##
 * v9.34.0 (2014-07-18)
 	* allow burning of arbitrary assets
+* v9.33.1 (2014-07-21)
+	* moved Armory support to Counterwallet (allow use of uncompressed keys)
+	* improved performance of mempool population
+	* new ‘blockchain’ backend
 * v9.33.0 (2014-07-18)
-	* bug in call_date and call_price sanity checks (protocol change: 312000)
+	* bug in call_date and call_price sanity checks (protocol change: 312500)
 * v9.32.0 (2014-07-15)
 	* API underlying library changed from cherrypy to flask
 	* "/" supported as an API endpoint
