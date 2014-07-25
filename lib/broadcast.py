@@ -232,7 +232,7 @@ def parse (db, tx, message):
                 if tx['block_index'] >= 311500 or config.TESTNET:   # Protocol change.
                     remaining = escrow_less_fee - (bull_credit + bear_credit)
                     bull_credit += round(remaining * Fraction(bull_escrow, bear_escrow))
-                    bear_credit += remaining  - bull_credit
+                    bear_credit += remaining - bull_credit
 
                 util.credit(db, tx['block_index'], bull_address, config.XCP, bull_credit)
                 util.credit(db, tx['block_index'], bear_address, config.XCP, bear_credit)
