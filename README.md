@@ -8,6 +8,9 @@ protocol.
 The Counterparty protocol specification may be found at <http://counterparty.io/docs/protocol/>
 and the original counterpartyd implementation at <https://github.com/CounterpartyXCP/counterpartyd>.
 
+We provide a Docker recipe to run dogepartyd easily: <https://github.com/Dogeparty/dogepartyd-docker>.
+
+
 # Dependencies
 * [Python 3](http://python.org)
 * Python 3 packages: apsw, requests, appdirs, prettytable, python-dateutil, json-rpc, tornado, flask, Flask-HTTPAuth, pycoin, pyzmq(v2.2+), pycrypto (see [this link](https://github.com/Dogeparty/dogepartyd/blob/master/pip-requirements.txt) for exact working versions)
