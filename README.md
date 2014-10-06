@@ -5,8 +5,8 @@ payments. It uses Dogecoin as a transport layer. The contents of this
 repository, `dogepartyd`, constitute the reference implementation of the
 protocol.
 
-The Counterparty protocol specification may be found at
-<https://github.com/CounterpartyXCP/Counterparty>.
+The Counterparty protocol specification may be found at <http://counterparty.io/docs/protocol/>
+and the original counterpartyd implementation at <https://github.com/CounterpartyXCP/counterpartyd>.
 
 # Dependencies
 * [Python 3](http://python.org)
@@ -63,8 +63,8 @@ you can manually update these requirements by executing something like:
 # Test suite
 
 The test suite is invoked with `py.test` in the root directory of the repository.
-Dogecoind testnet and mainnet must run on the default ports and use the same rpcuser and rpcpassword. 
-Do not include the following values ​​in dogepartyd.conf: dogecoind-rpc-connect, bitcoind-rpc-port, rpc-host, rpc-port and testnet.
+Dogecoind testnet and mainnet must run on the default ports and use the same rpcuser and rpcpassword.
+Do not include the following values in dogepartyd.conf: dogecoind-rpc-connect, bitcoind-rpc-port, rpc-host, rpc-port and testnet.
 
 # Usage
 The command‐line syntax of dogepartyd is generally that of
@@ -113,7 +113,7 @@ The following examples are abridged for parsimony.
 	```
 
 * Buy DOGE for XDP
-	
+
 	```
 	order --source=mtQheFaSfWELRB2MyMBaiWjdDm6ux9Ezns --get-quantity=10 --get-asset=DOGE
 	--give-quantity=20 --give-asset=XDP --expiration=10 --fee_required=.001
@@ -153,9 +153,9 @@ The following examples are abridged for parsimony.
 		add an additional set of quotes. For example, `--text='"Dogecoin price feed"'`.
 
 * Bet
-	
+
 	Equal/Not Equal Bet:
-	
+
 	Example: Bet on Super Bowl Feed. Denver vs. Seattle. Feed value of 1 means Seattle Wins. Feed value of 2 means 	        	Denver Wins. This command places a 1 XDP bet on the Super Bowl Feed for Seattle to win, paying out 2 to         	1. The bet will expire in 100 blocks and the settlement value of the bet is based on the first feed 	                update after the deadline timestamp of February 3, 2014 1:39 PM US Eastern Standard Time (UTC-0500)
 	```
 	bet --source=mtQheFaSfWELRB2MyMBaiWjdDm6ux9Ezns --feed-address=n3BrDB6zDiEPWEE6wLxywFb4Yp9ZY5fH --bet-type=Equal
@@ -163,16 +163,16 @@ The following examples are abridged for parsimony.
 	```
 
 	Contract for Difference:
-	
+
 	Example: Bet on Dogecoin Price Feed. This command places a bearish (short) 1 XDP wager on the price of DOGE/USD 				with 2X leverage. The bet will expire in 100 blocks and the settlement value of the bet is based 			on the first feed update after the deadline timestamp of February 3, 2014 1:39 PM US Eastern 					Standard Time (UTC-0500)
 	```
 	bet --source=mtQheFaSfWELRB2MyMBaiWjdDm6ux9Ezns --feed-address=n3BrDB6zDiEPWEE6wLxywFb4Yp9ZY5fH --bet-type=BearCFD --deadline=2014-02-03T13:39:00-0500 --wager=1 --counterwager=1 --leverage=10080 --expiration=100
 	```
 
 * Rock-Paper-Scissors
-	
+
 	Open a Rock-Paper-Scissors like game with arbitrary possible moves (Must be an odd number greater or equal than 3). Until you make an rpsresolve transaction, your move is stored as an hash and keep secret.
-	
+
 	Example: Play rock-paper-scissors-spock-lizard (http://en.wikipedia.org/wiki/Rock-paper-scissors-lizard-Spock):
 
 	```
@@ -180,7 +180,7 @@ The following examples are abridged for parsimony.
 	```
 
 	Keep well the random number generated, you need it to resolve the game after matching:
-	
+
 	```
 	rpsresolve --source=mtQheFaSfWELRB2MyMBaiWjdDm6ux9Ezns --move=2 --random=adc5eadf9cb698ff6f2410d76131a4ee --rps-match-id=c68ffe144952977b94f8d7b49a1c7be7a4bb522c56f2ffc5aefa78ae0f9799b003b0f79d59ba660138583277b8267301a1030577790b945c4e8f845f19c23ca2
 	```
@@ -197,22 +197,22 @@ The following examples are abridged for parsimony.
 
 * Market
 
-	The `market` action prints out tables of open orders, open bets, feeds, and order matches currently awaiting 	        Dogecoin payments from one of your addresses. 
-	
+	The `market` action prints out tables of open orders, open bets, feeds, and order matches currently awaiting 	        Dogecoin payments from one of your addresses.
+
 	It is capable of filtering orders by assets to be bought and sold.
-	
+
 	Example:
-	
+
 	To filter the market to only show offers to sell (give) DOGE:
 	```
 	market --give-asset=DOGE
 	```
-	
+
 	To filter the market to only show offers to buy (get) DOGE:
 	```
 	market --get-asset=DOGE
 	```
-	
+
 	To filter the market to only show offers to sell DOGE for XDP:
 	```
 	market --give-asset=DOGE --get-asset=XDP
