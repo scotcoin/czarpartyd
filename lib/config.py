@@ -14,7 +14,7 @@ VERSION_REVISION = 0
 VERSION_STRING = str(VERSION_MAJOR) + '.' + str(VERSION_MINOR) + '.' + str(VERSION_REVISION)
 
 
-# Counterparty protocol
+# Czarparty protocol
 TXTYPE_FORMAT = '>I'
 
 TWO_WEEKS = 2 * 7 * 24 * 3600
@@ -28,18 +28,18 @@ MEMPOOL_BLOCK_INDEX = 9999999
 MAX_INT = 2**63 - 1
 
 
-# Bitcoin Core
+# Czarcoin Core
 OP_RETURN_MAX_SIZE = 40 # bytes
 
 
 # Currency agnosticism
-BTC = 'BTC'
-XCP = 'XCP'
+CZR = 'CZR'
+XZR = 'XZR'
 
-BTC_NAME = 'Bitcoin'
-BTC_CLIENT = 'bitcoind'
-XCP_NAME = 'Counterparty'
-XCP_CLIENT = 'counterpartyd'
+CZR_NAME = 'Czarcoin'
+CZR_CLIENT = 'czarcoind'
+XZR_NAME = 'Czarparty'
+XZR_CLIENT = 'czarpartyd'
 
 DEFAULT_RPC_PORT_TESTNET = 14000
 DEFAULT_RPC_PORT = 4000
@@ -47,8 +47,8 @@ DEFAULT_RPC_PORT = 4000
 DEFAULT_BACKEND_RPC_PORT_TESTNET = 18332
 DEFAULT_BACKEND_RPC_PORT = 8332
 
-UNSPENDABLE_TESTNET = 'mvCounterpartyXXXXXXXXXXXXXXW24Hef'
-UNSPENDABLE_MAINNET = '1CounterpartyXXXXXXXXXXXXXXXUWLpVr'
+UNSPENDABLE_TESTNET = 'mvCzarpartyXXXXXXXXXXXXXXW24Hef'
+UNSPENDABLE_MAINNET = '1CzarpartyXXXXXXXXXXXXXXXUWLpVr'
 
 ADDRESSVERSION_TESTNET = b'\x6f'
 # PRIVATEKEY_VERSION_TESTNET =
@@ -81,7 +81,7 @@ BURN_END_MAINNET = 283810
 DEFAULT_REGULAR_DUST_SIZE = 5430         # TODO: This is just a guess. I got it down to 5530 satoshis.
 DEFAULT_MULTISIG_DUST_SIZE = 7800        # <https://bitcointalk.org/index.php?topic=528023.msg7469941#msg7469941>
 DEFAULT_OP_RETURN_VALUE = 0
-DEFAULT_FEE_PER_KB = 10000                # Bitcoin Core default is 10000.  # TODO: Lower 10x later, too.
+DEFAULT_FEE_PER_KB = 10000                # Czarcoin Core default is 10000.  # TODO: Lower 10x later, too.
 
 
 # UI defaults

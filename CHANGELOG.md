@@ -1,11 +1,11 @@
 ## Client Versions ##
 * v9.42.0 (2014-09-04)
-	* disable dividends to XCP holders (protocol change: 320000)
+	* disable dividends to XZR holders (protocol change: 320000)
 	* allow dividends only from issuers (protocol change: 320000)
 * v9.41.0 (2014-08-21)
 	* fixed bug in new text and descriptions
 * v9.40.0 (2014-08-20)
-	* allow dividends to be paid to XCP holders (protocol change: 317500)
+	* allow dividends to be paid to XZR holders (protocol change: 317500)
 	* fixed bug in BTCpay validation
 	* allow null expirations (protocol change: 317500)
 	* assert first block in database is BLOCK_FIRST
@@ -93,7 +93,7 @@
 	* tweaked test suite
 	* fixed failed sanity check on testnet
 * v9.17.0
-	* failed XCP conservation sanity check on testnet (deadline checking in bets)
+	* failed XZR conservation sanity check on testnet (deadline checking in bets)
 * v9.16.3
 	* bug fixes
 * v9.16.2
@@ -157,7 +157,7 @@
 * arbitrary spend with multi‐sig input: retroactive
 * deduct `fee_required`, too: 287800
 * value, quantity, etc. sanity checking: retroactive
-* reduce issuance fee to 0.5 XCP: 291700
+* reduce issuance fee to 0.5 XZR: 291700
 * match only with positive get/counterwager remaining: 292000
 * pay‐to‐pubkeyhash encoding: 293000
 * filtered negative order fees: 294000

@@ -4,7 +4,7 @@
 
 import struct
 
-from . import (util, config, exceptions, bitcoin, util)
+from . import (util, config, exceptions, czarcoin, util)
 
 FORMAT = '>QQ'
 LENGTH = 8 + 8
@@ -14,7 +14,7 @@ ID = 0
 def validate (db, source, destination, asset, quantity):
     problems = []
 
-    if asset == config.BTC: problems.append('cannot send bitcoins')  # Only for parsing.
+    if asset == config.CZR: problems.append('cannot send czarcoins')  # Only for parsing.
 
     if not isinstance(quantity, int):
         problems.append('quantity must be in satoshis')
@@ -27,8 +27,8 @@ def validate (db, source, destination, asset, quantity):
 def compose (db, source, destination, asset, quantity):
     cursor = db.cursor()
 
-    # Just send BTC?
-    if asset == config.BTC:
+    # Just send CZR?
+    if asset == config.CZR:
         return (source, [(destination, quantity)], None)
 
     #quantity must be in int satoshi (not float, string, etc)
