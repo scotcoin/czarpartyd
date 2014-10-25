@@ -23,3 +23,7 @@ test/czarpartyd.unittest.db-shm
 test/czarpartyd.unittest.db-wal
 test/db.dump.new
 test/output.json.new
+
+# Czarparty Data
+data
+data/*
