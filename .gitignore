@@ -27,4 +27,4 @@ test/output.json.new
 # Czarparty Data
 data
 data/*
-config.py
+settings.py
