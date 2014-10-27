@@ -387,7 +387,7 @@ def wif_prefix (is_test):
     if is_test:
         return b'\xf1'
     else:
-        return b'\x4e'
+        return b'\x8f'
 
 def private_key_to_public_key (private_key_wif):
     #allowable_wif_prefixes = [
