@@ -387,7 +387,7 @@ def wif_prefix (is_test):
     if is_test:
         return b'\xf1'
     else:
-        return b'\x8f'
+        return [b'\x8f']
 
 def private_key_to_public_key (private_key_wif):
     #allowable_wif_prefixes = [
@@ -395,7 +395,7 @@ def private_key_to_public_key (private_key_wif):
         #secret_exponent, compressed = wif_to_tuple_of_secret_exponent_compressed(private_key_wif, is_test=config.TESTNET)
         print([wif_prefix(is_test=config.TESTNET)])
         #secret_exponent, compressed = wif_to_tuple_of_secret_exponent_compressed(private_key_wif, [wif_prefix(is_test=config.TESTNET)])
-        secret_exponent, compressed = wif_to_tuple_of_secret_exponent_compressed(private_key_wif, wif_prefix(is_test=config.TESTNET))
+        secret_exponent, compressed = wif_to_tuple_of_secret_exponent_compressed(private_key_wif, [wif_prefix(is_test=config.TESTNET)])
     except EncodingError:
         raise exceptions.AltcoinSupportError('pycoin: unsupported WIF prefix')
     public_pair = public_pair_for_secret_exponent(generator_secp256k1, secret_exponent)
