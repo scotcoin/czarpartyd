@@ -119,6 +119,7 @@ def wallet_unlock ():
         return True    # Wallet is unencrypted.
 
 def rpc (method, params):
+    print(params)
     headers = {'content-type': 'application/json'}
     payload = {
         "method": method,
