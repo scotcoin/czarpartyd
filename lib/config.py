@@ -82,11 +82,14 @@ BURN_MULTIPLIER = 100					# 100 XZR per 1 CZR
 # NOTE: If the DUST_SIZE constants are changed, they MUST also be changed in czarblockd/lib/config.py as well
     # TODO: This should be updated, given their new configurability.
 # TODO: The dust values should be lowered by 90%, once transactions with smaller outputs start confirming faster: <https://github.com/mastercoin-MSC/spec/issues/192>
-DEFAULT_REGULAR_DUST_SIZE = 5430         # TODO: This is just a guess. I got it down to 5530 satoshis.
-DEFAULT_MULTISIG_DUST_SIZE = 7800        # <https://bitcointalk.org/index.php?topic=528023.msg7469941#msg7469941>
-DEFAULT_OP_RETURN_VALUE = 0
-DEFAULT_FEE_PER_KB = 10000                # Czarcoin Core default is 10000.  # TODO: Lower 10x later, too.
-
+#DEFAULT_REGULAR_DUST_SIZE = 5430         # TODO: This is just a guess. I got it down to 5530 satoshis.
+#DEFAULT_MULTISIG_DUST_SIZE = 7800        # <https://bitcointalk.org/index.php?topic=528023.msg7469941#msg7469941>
+#DEFAULT_OP_RETURN_VALUE = 0
+#DEFAULT_FEE_PER_KB = 10000                # Czarcoin Core default is 10000.  # TODO: Lower 10x later, too.
+DEFAULT_REGULAR_DUST_SIZE = UNIT 	  # 1 CZR; there is not dust limit in Czarcoin, but every txout < 1 CZR, cost 1 CZR in fee
+DEFAULT_MULTISIG_DUST_SIZE = UNIT * 2 # 2 CZR.
+DEFAULT_OP_RETURN_VALUE = 0 		  # 0 CZR.
+DEFAULT_FEE_PER_KB = UNIT             # 1 CZR.
 
 # UI defaults
 DEFAULT_FEE_FRACTION_REQUIRED = .009   # 0.90%
