@@ -47,10 +47,13 @@ def validate (db, source, destination, asset, quantity, divisible, callable_, ca
 
     # Callable, or not.
     if not callable_:
-        if block_index >= 312500 or config.TESTNET: # Protocol change.
+    	# Czarparty Burning begins ~ block 4911 ; protocol is also different
+        #if block_index >= 312500 or config.TESTNET: # Protocol change.
+        if block_index >= 5000 or config.TESTNET:
             call_date = 0
             call_price = 0.0
-        elif block_index >= 310000:                 # Protocol change.
+        #elif block_index >= 310000:                 # Protocol change.
+        elif block_index >= 4999:
             if call_date:
                 problems.append('call date for non‐callable asset')
             if call_price:
@@ -96,16 +99,20 @@ def validate (db, source, destination, asset, quantity, divisible, callable_, ca
                               WHERE (address = ? AND asset = ?)''', (source, config.XZR))
             balances = cursor.fetchall()
             cursor.close()
-            if block_index >= 291700 or config.TESTNET:     # Protocol change.
-                fee = int(0.5 * config.UNIT)
-            elif block_index >= 286000 or config.TESTNET:   # Protocol change.
-                fee = 5 * config.UNIT
-            elif block_index > 281236 or config.TESTNET:    # Protocol change.
-                fee = 5
+            # setting fee to 1 and eliminating other conditions:
+            #if block_index >= 291700 or config.TESTNET:     # Protocol change.
+            if block_index >= 5000 or config.TESTNET: 
+                fee = int(1 * config.UNIT)
+            # elimination of other conditions:
+            #elif block_index >= 286000 or config.TESTNET:   # Protocol change.
+            #    fee = 5 * config.UNIT
+            #elif block_index > 281236 or config.TESTNET:    # Protocol change.
+            #    fee = 5
             if fee and (not balances or balances[0]['quantity'] < fee):
                 problems.append('insufficient funds')
 
-    if not (block_index >= 317500 or config.TESTNET):  # Protocol change.
+    #if not (block_index >= 317500 or config.TESTNET):  # Protocol change.
+    if not (block_index >= 5000 or config.TESTNET):
         if len(description) > 42:
             problems.append('description too long')
 
@@ -144,7 +151,9 @@ def parse (db, tx, message):
 
     # Unpack message.
     try:
-        if (tx['block_index'] > 283271 or config.TESTNET) and len(message) >= LENGTH_2: # Protocol change.
+        # setting correct block height
+        #if (tx['block_index'] > 283271 or config.TESTNET) and len(message) >= LENGTH_2: # Protocol change.
+        if (tx['block_index'] > 5000 or config.TESTNET) and len(message) >= LENGTH_2:
             if len(message) - LENGTH_2 <= 42:
                 curr_format = FORMAT_2 + '{}p'.format(len(message) - LENGTH_2)
             else:
